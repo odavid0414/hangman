@@ -1,15 +1,26 @@
 import { useEffect } from "react";
-import { smokeTestWords } from "./services/firebase/smokeTest";
-
+import { BrowserRouter, Route, Routes } from "react-router";
+import Start from "./pages/Start";
+import Play from "./pages/Play";
+import Admin from "./pages/Admin";
+import { AppLayout } from "./components/AppLayout";
+import { useGetWordsQuery } from "./store/words";
 function App() {
+  const { data, isLoading } = useGetWordsQuery();
 
   useEffect(() => {
-    smokeTestWords();
-  }, []);
+    if (!isLoading) console.log('RTK words:', data);
+  }, [isLoading, data]);
   return (
-    <>
-      Hello World
-    </>
+    <BrowserRouter>
+      <AppLayout>
+        <Routes>
+          <Route path="/" element={<Start />} />
+          <Route path="/play" element={<Play />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </AppLayout>
+    </BrowserRouter>
   )
 }
 
