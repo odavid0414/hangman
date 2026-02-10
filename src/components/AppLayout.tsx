@@ -1,6 +1,6 @@
 import { AppShell, Button, Group, Title } from "@mantine/core";
 import { useMantineColorScheme } from "@mantine/core";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type AppLayoutProps = {
   children: ReactNode;
