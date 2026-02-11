@@ -1,25 +1,29 @@
 import { Group, Text } from "@mantine/core";
 
 type WordSlotsProps = {
-  length?: number;
+  word: string;
+  guessedLetters: string[];
 };
 
-export function WordSlots({ length = 7 }: WordSlotsProps) {
-  const slots = Array.from({ length }, (_, index) => index);
+export function WordSlots({ word, guessedLetters }: WordSlotsProps) {
+  const letters = word.split("");
 
   return (
     <Group gap={10} justify="flex-start">
-      {slots.map((slot) => (
+      {letters.map((letter, index) => {
+        const isRevealed = guessedLetters.includes(letter.toLowerCase());
+        return (
         <Text
-          key={slot}
+          key={`${letter}-${index}`}
           size="lg"
           fw={600}
           lts={"0.2em"}
           style={{ borderBottom: "2px solid currentColor" }}
         >
-          &nbsp;
+          {isRevealed ? letter.toUpperCase() : "\u00A0"}
         </Text>
-      ))}
+        );
+      })}
     </Group>
   );
 }
