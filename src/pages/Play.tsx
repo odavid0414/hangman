@@ -1,6 +1,6 @@
 import { Box, Button, Container, Group, SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import { useNavigate, useSearchParams } from "react-router";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HangmanPanel } from "../components/HangmanPanel";
 import { LetterKeyboard } from "../components/LetterKeyboard";
@@ -16,6 +16,7 @@ function Play() {
   const navigate = useNavigate();
   const { data: words = [], isLoading } = useGetWordsQuery();
   const activeGame = useSelector((state: RootState) => state.game.activeGame);
+  const [isEnding, setIsEnding] = useState(false);
 
   const wordList = useMemo(() => {
     const allWords = words.map((item) => item.value);
@@ -33,7 +34,7 @@ function Play() {
   }, [difficulty, words]);
 
   useEffect(() => {
-    if (isLoading || wordList.length === 0) return;
+    if (isEnding || isLoading || wordList.length === 0) return;
 
     const activeWordValid =
       activeGame && wordList.includes(activeGame.word) && activeGame.difficulty === difficulty;
@@ -42,7 +43,7 @@ function Play() {
 
     const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
     dispatch(startGame({ word: randomWord, difficulty }));
-  }, [activeGame, dispatch, difficulty, isLoading, wordList]);
+  }, [activeGame, dispatch, difficulty, isEnding, isLoading, wordList]);
 
   const handleLetterClick = (letter: string) => {
     if (isWin || isLose) return;
@@ -50,8 +51,15 @@ function Play() {
   };
 
   const handleStartNewGame = () => {
+    if (wordList.length === 0) return;
+    const randomWord = wordList[Math.floor(Math.random() * wordList.length)];
+    dispatch(startGame({ word: randomWord, difficulty }));
+  };
+
+  const handleEndGame = () => {
+    setIsEnding(true);
     dispatch(endGame());
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   const isWin =
@@ -104,6 +112,9 @@ function Play() {
               <Group gap="sm">
                 <Button color="cyan" onClick={handleStartNewGame}>
                   START NEW GAME
+                </Button>
+                <Button variant="outline" color="cyan" onClick={handleEndGame}>
+                  END GAME
                 </Button>
               </Group>
             </Stack>
