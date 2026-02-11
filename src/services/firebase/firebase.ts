@@ -1,13 +1,24 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+
+const {
+  VITE_FIREBASE_API_KEY,
+  VITE_FIREBASE_AUTH_DOMAIN,
+  VITE_FIREBASE_PROJECT_ID,
+  VITE_FIREBASE_STORAGE_BUCKET,
+  VITE_FIREBASE_MESSAGING_SENDER_ID,
+  VITE_FIREBASE_APP_ID,
+  VITE_MEASURMENT_ID,
+} = import.meta.env;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDY19E_3Uv8GugzxOwb6o9ONMuCyB2jZig",
-  authDomain: "hangman-db-fc4a9.firebaseapp.com",
-  projectId: "hangman-db-fc4a9",
-  storageBucket: "hangman-db-fc4a9.firebasestorage.app",
-  messagingSenderId: "377801546733",
-  appId: "1:377801546733:web:fe781b9eb4f1dc4f27e5e4",
-  measurementId: "G-M3XB4K499C"
+  apiKey: VITE_FIREBASE_API_KEY,
+  authDomain: VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: VITE_FIREBASE_PROJECT_ID,
+  storageBucket: VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: VITE_FIREBASE_APP_ID,
+  measurementId: VITE_MEASURMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
