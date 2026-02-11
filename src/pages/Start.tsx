@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { Box, Button, Center, Container, Stack, Text, Title } from "@mantine/core";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 import { DifficultyButton } from "../components/DifficultyButton";
 
 type Difficulty = {
@@ -18,11 +20,16 @@ const difficultyOptions: Difficulty[] = [
 
 function Start() {
   const [selectedId, setSelectedId] = useState<Difficulty["id"]>("easy");
+  const activeGame = useSelector((state: RootState) => state.game.activeGame);
 
   const selected = useMemo(
     () => difficultyOptions.find((option) => option.id === selectedId) ?? difficultyOptions[0],
     [selectedId]
   );
+
+  if (activeGame) {
+    return <Navigate to={`/play?difficulty=${activeGame.difficulty ?? "easy"}`} replace />;
+  }
 
   return (
     <Box component="main" mih="100vh" display="flex" style={{ alignItems: "center" }}>
